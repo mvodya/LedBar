@@ -1,0 +1,5 @@
+# Igonre directories from IDE
+.vscode
+
+# Igonre tempory directories
+[Bb]uild
