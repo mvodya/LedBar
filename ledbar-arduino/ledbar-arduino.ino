@@ -1,11 +1,7 @@
 #include "ledbar.h"
 
-LedPad ledPad();
+LedBar *ledBar;
 
-void setup() {
+void setup() { ledBar = new LedBar(); }
 
-}
-
-void loop() {
-  
-}
+void loop() { ledBar->tick(); }
