@@ -48,6 +48,9 @@ namespace LedbarService
                 Environment.Exit(1);
             }
 
+            // Clear screen
+            ClearScreen();
+
             // Start main loop
             ServiceLoop();
 
@@ -67,6 +70,12 @@ namespace LedbarService
             Console.WriteLine("Port closed. Turn off service");
             serialPort.Close();
             Environment.Exit(0);
+        }
+
+        // Clear dispay screen
+        static void ClearScreen()
+        {
+            serialPort.Write("CLSC;");
         }
 
         // Backlight control
