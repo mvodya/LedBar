@@ -93,10 +93,22 @@ void LedBar::tick() {
       String text = command.substring(5);
       lcd->setCursor(0, pos);
       lcd->print(text);
+      // Clear right space
+      for (int i = 0; i < 20 - text.length(); i++) {
+        lcd->print(" ");
+      }
     }
     // CLear SCreen
     if (command.substring(0, 4) == "CLSC") {
       lcd->clear();
+    }
+    // Back Light Control oFf
+    if (command.substring(0, 4) == "BLCF") {
+      lcd->noBacklight();
+    }
+    // Back Light Control oN
+    if (command.substring(0, 4) == "BLCN") {
+      lcd->backlight();
     }
   }
 }
