@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO.Ports;
 using System.Threading;
+using System.Diagnostics;
 
 namespace LedbarService
 {
@@ -20,7 +21,11 @@ namespace LedbarService
             CompInfo = 1
         }
         // Display mode
-        Modes mode = Modes.CompInfo;
+        static Modes mode = Modes.CompInfo;
+
+        // Data
+        static PerformanceCounter cpuCounter;
+        static PerformanceCounter ramCounter;
 
         static void Main(string[] args)
         {
@@ -39,6 +44,7 @@ namespace LedbarService
             Console.WriteLine("\nOpening " + connectPort + "...");
             serialPort = new SerialPort(connectPort, 9600, Parity.None, 8, StopBits.One);
             serialPort.Open();
+            //serialPort.DtrEnable = true;
             // Check com status
             if (serialPort.IsOpen)
                 Console.WriteLine("Success!\n");
@@ -48,8 +54,13 @@ namespace LedbarService
                 Environment.Exit(1);
             }
 
-            // Clear screen
+            // Data loading
+            DataLoad();
+
+            // Clear screen and backlight
             ClearScreen();
+            Backlight(true);
+            
 
             // Start main loop
             ServiceLoop();
@@ -63,6 +74,13 @@ namespace LedbarService
         {
             while (serialPort.IsOpen)
             {
+                switch (mode)
+                {
+                    // Comp info
+                    case Modes.CompInfo:
+                        ModeCopmInfo();
+                        break;
+                }
                 Thread.Sleep(50);
             }
 
@@ -95,6 +113,37 @@ namespace LedbarService
         static void WriteScreen(int pos, string message)
         {
             serialPort.Write("WRSC" + pos + message + ";");
+        }
+
+        static void DataLoad()
+        {
+            cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+            ramCounter = new PerformanceCounter("Memory", "Available MBytes");
+        }
+
+        // MODE CompInfo
+        static void ModeCopmInfo()
+        {
+            string cpu = Convert.ToString(Convert.ToInt32(cpuCounter.NextValue()));
+            if (cpu.Length == 2) cpu = " " + cpu;
+            else if (cpu.Length == 1) cpu = "  " + cpu;
+
+            WriteScreen(0, "CPU:" + cpu + "% RAM: " + Convert.ToString(Convert.ToInt32(ramCounter.NextValue())) + "M");
+            string bar = "[";
+            for (int i = 0; i < 18; i++)
+            {
+                if (i < (Convert.ToInt32(cpu) / 5))
+                {
+                    bar += "|";
+                } else
+                {
+                    bar += " ";
+                }
+            }
+            WriteScreen(1, bar + "]");
+            WriteScreen(3, DateTime.Now.ToString("HH:mm:ss"));
+            
+            Thread.Sleep(1000);
         }
     }
 }
