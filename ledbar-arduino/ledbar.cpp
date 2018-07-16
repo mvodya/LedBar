@@ -114,4 +114,19 @@ void LedBar::rgbSet(int r, int g, int b) {
 }
 
 // Loop tick
-void LedBar::tick() {}
+void LedBar::tick() {
+  while (Serial.available()) {
+    String command = Serial.readStringUntil(';');
+    // WRite SCreen
+    if (command.substring(0, 4) == "WRSC") {
+      int pos = command.substring(4,5).toInt();
+      String text = command.substring(5);
+      lcd->setCursor(0, pos);
+      lcd->print(text);
+    }
+    // CLear SCreen
+    if (command.substring(0, 4) == "CLSC") {
+      lcd->clear();
+    }
+  }
+}
