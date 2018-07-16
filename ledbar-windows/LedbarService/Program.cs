@@ -44,7 +44,7 @@ namespace LedbarService
             Console.WriteLine("\nOpening " + connectPort + "...");
             serialPort = new SerialPort(connectPort, 9600, Parity.None, 8, StopBits.One);
             serialPort.Open();
-            //serialPort.DtrEnable = true;
+            serialPort.DtrEnable = true;
             // Check com status
             if (serialPort.IsOpen)
                 Console.WriteLine("Success!\n");
