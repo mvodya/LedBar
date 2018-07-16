@@ -45,6 +45,8 @@ namespace LedbarService
             serialPort = new SerialPort(connectPort, 9600, Parity.None, 8, StopBits.One);
             serialPort.Open();
             serialPort.DtrEnable = true;
+            serialPort.ReadTimeout = 100;
+            serialPort.WriteTimeout = 100;
             // Check com status
             if (serialPort.IsOpen)
                 Console.WriteLine("Success!\n");
@@ -53,6 +55,8 @@ namespace LedbarService
                 Console.WriteLine("Fail.\n");
                 Environment.Exit(1);
             }
+
+            Thread.Sleep(10000);
 
             // Data loading
             DataLoad();
