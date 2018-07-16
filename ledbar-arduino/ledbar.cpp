@@ -39,12 +39,12 @@ void LedBar::greetingLoad() {
       lcd->print(random(2));
       // Random rgb blink
       rgbSet(random(255), random(255), random(255));
-      delay(50);
+      delay(20);
     }
   }
   // Off rgb
   rgbSet(0, 0, 0);
-  delay(1000);
+  delay(500);
   // Remove random
   for (int i = 0; i < 20; i++) {
     rgbSet(0, 0, 255 - (i * 12));
@@ -56,7 +56,7 @@ void LedBar::greetingLoad() {
     lcd->print(" ");
     lcd->setCursor(19 - i, 3);
     lcd->print(" ");
-    delay(100);
+    delay(50);
   }
   // Off rgb
   rgbSet(0, 0, 0);
@@ -66,41 +66,11 @@ void LedBar::greetingLoad() {
   lcd->print("LCD BAR");
   lcd->setCursor(0, 3);
   lcd->print("by @mvodya");
-  delay(700);
-  // Computer connect wait
-  lcd->setCursor(0, 1);
-  lcd->print("waiting connect");
-  while (!connectWait()) {
-    lcd->setCursor(15, 1);
-    lcd->print("   ");
-    lcd->setCursor(15, 1);
-    rgbSet(0, 0, 0);
-    delay(300);
-    lcd->print(".");
-    rgbSet(50, 0, 0);
-    delay(300);
-    lcd->print(".");
-    rgbSet(100, 0, 0);
-    delay(300);
-    lcd->print(".");
-    rgbSet(255, 0, 0);
-    delay(100);
-  }
-  // Connected
-  lcd->setCursor(0, 1);
-  lcd->print("connected!         ");
-  rgbSet(0, 255, 0);
-  delay(1000);
+  // Clear screen and off
+  delay(1500);
   rgbSet(0, 0, 0);
   lcd->clear();
-}
-
-// On connection wait
-bool LedBar::connectWait() {
-  if (Serial.readString() == "TRY_CONN")
-    return true;
-  else
-    return false;
+  lcd->noBacklight();
 }
 
 // RGB Control
@@ -119,7 +89,7 @@ void LedBar::tick() {
     String command = Serial.readStringUntil(';');
     // WRite SCreen
     if (command.substring(0, 4) == "WRSC") {
-      int pos = command.substring(4,5).toInt();
+      int pos = command.substring(4, 5).toInt();
       String text = command.substring(5);
       lcd->setCursor(0, pos);
       lcd->print(text);
