@@ -2,6 +2,8 @@
 
 Information LCD display for desktop.
 
+![LedBar_preview](https://frogling.com/site/wp-content/uploads/2018/07/DSC_0277.jpg)
+
 This display can show any information in real time directly from the computer connected via USB.
 
 ## How it works
@@ -21,3 +23,5 @@ This display can show any information in real time directly from the computer co
 
 ### Using lib's
 * [LiquidCrystal-I2C (fdebrabander)](https://github.com/fdebrabander/Arduino-LiquidCrystal-I2C-library)
+
+#### See more info on [this site](https://frogling.com/ledbar-project/)
