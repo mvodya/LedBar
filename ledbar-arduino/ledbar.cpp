@@ -25,9 +25,9 @@ void LedBar::lcdInit() {
 // Init output's/input's
 void LedBar::ioInit() {
   // RGB Led
-  pinMode(3, OUTPUT);
-  pinMode(5, OUTPUT);
-  pinMode(6, OUTPUT);
+  pinMode(PIN_RGB_R, OUTPUT);
+  pinMode(PIN_RGB_G, OUTPUT);
+  pinMode(PIN_RGB_B, OUTPUT);
   // Connect indicator
   pinMode(PIN_CONNECT_INDICATOR, OUTPUT);
 }
