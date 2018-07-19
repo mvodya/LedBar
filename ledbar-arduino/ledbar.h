@@ -5,6 +5,8 @@
 #define PIN_RGB_R 3
 #define PIN_RGB_G 5
 #define PIN_RGB_B 6
+// Other output pins
+#define PIN_CONNECT_INDICATOR 8
 
 class LedBar {
   // LCD display

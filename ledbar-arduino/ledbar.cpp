@@ -28,6 +28,8 @@ void LedBar::ioInit() {
   pinMode(3, OUTPUT);
   pinMode(5, OUTPUT);
   pinMode(6, OUTPUT);
+  // Connect indicator
+  pinMode(PIN_CONNECT_INDICATOR, OUTPUT);
 }
 
 // Greetings display
@@ -86,6 +88,9 @@ void LedBar::rgbSet(int r, int g, int b) {
 // Loop tick
 void LedBar::tick() {
   while (Serial.available()) {
+    // Blink connect indicator
+    digitalWrite(PIN_CONNECT_INDICATOR, 1);
+    // Read serial string
     String command = Serial.readStringUntil(';');
     // WRite SCreen
     if (command.substring(0, 4) == "WRSC") {
@@ -110,5 +115,7 @@ void LedBar::tick() {
     if (command.substring(0, 4) == "BLCN") {
       lcd->backlight();
     }
+    // Blink connect indicator
+    digitalWrite(PIN_CONNECT_INDICATOR, 0);
   }
 }
